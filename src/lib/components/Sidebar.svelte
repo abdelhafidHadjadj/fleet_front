@@ -47,7 +47,7 @@
                 <span class="tooltip">Routes</span>
             </li>
             <li class="relative my-8">
-                <a href="/operator">
+                <a href="/operators">
                     <i class="bx bx-user text-white h-16 leading-16 min-w-12 text-lg text-center" ></i>
                     <span class="link_name">operators</span>
                 </a>
