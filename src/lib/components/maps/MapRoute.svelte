@@ -30,6 +30,7 @@
         directions.on('origin', (event) => {
             if (event.feature && event.feature.geometry && event.feature.geometry.coordinates) {
                 startingPlace = event.feature.geometry.coordinates;
+                console.log(startingPlace);
                 dispatch('startingPlaceChanged', { startingPlace });
             }
         });
@@ -58,11 +59,10 @@
 <style>
 	
     #map {
-        position: absolute;
         top: 0;
         bottom: 0;
-        width: 50%;
-		height: 50%;
+        width: 100%;
+		height: 100%;
     }
 
     @media (max-width: 600px) {

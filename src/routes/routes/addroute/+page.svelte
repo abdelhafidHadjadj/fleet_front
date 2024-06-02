@@ -1,52 +1,54 @@
 <script>
     import { onMount, createEventDispatcher } from 'svelte';
     import axios from 'axios';
-    import MapRoute from "$lib/components/maps/MapRoute.svelte";
+    import MapRoute from "../../../lib/components/maps/MapRoute.svelte";
 
     const dispatch = createEventDispatcher();
     let id;
-    let token = localStorage.getItem('token');
+    // let token = localStorage.getItem('token');
     let msg;
 
     const vehicles = [
         { 
             id: '1',
-            register_number: '1',
+            register_number: '0001',
             name: 'veh1',
+            model: '105'
         },
         { 
             id: '2',
-            register_number: '1',
+            register_number: '20000',
             name: 'veh1',
+            model: '207',
         },
         { 
             id: '3',
-            register_number: '1',
+            register_number: '3333 ',
             name: 'veh1',
+            model: '308',
         }
     ];
     
     const drivers = [
         { 
             id: '1',
-            register_number: '1',
-            firstname: 'veh1',
-            lastname: 'vvv2',
+            register_number: '1111',
+            firstname: 'dr1',
+            lastname: 'rr1',
         },
         { 
             id: '2',
-            register_number: '1',
-            firstname: 'veh1',
-            lastname: 'vvv2',
+            register_number: '2222',
+            firstname: 'dr2',
+            lastname: 'rr2',
         },
         { 
             id: '3',
-            register_number: '1',
-            firstname: 'veh1',
-            lastname: 'vvv2',
+            register_number: '3333',
+            firstname: 'dr3',
+            lastname: 'rr3',
         }
     ];
-
     let routeData = {
         departure_city: "",
         arrival_city: "",
@@ -61,141 +63,163 @@
         created_by: ""
     };
 
-    async function protectedRoute() {
-        try {
-            const res = await axios.get("http://127.0.0.1:8080/protected", {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            id = res.data.id;
-            console.log('created by ', id);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+   // async function protectedRoute() {
+   //     try {
+   //         const res = await axios.get("http://127.0.0.1:8080/protected", {
+   //             headers: {
+   //                 'Authorization': `Bearer ${token}`
+   //             }
+   //         });
+   //         id = res.data.id;
+   //         console.log('created by ', id);
+   //     } catch (error) {
+   //         console.log(error);
+   //     }
+   // }
 
-    onMount(() => protectedRoute());
+//    onMount(() => protectedRoute());
 
     let inputDriver = "";
     let inputVehicle = "";
-
+    let showDriverDropdown = false;
+    let showVehicleDropdown = false;
     function handleInputDriverChange(event) {
         inputDriver = event.target.value;
-    }
+        showDriverDropdown = true;
 
+    }
+    
+    
     function handleInputVehicleChange(event) {
         inputVehicle = event.target.value;
+        showVehicleDropdown = true;
     }
 
     function selectDriver(driver) {
-    inputDriver = `${driver.firstname} ${driver.lastname}`;
+    inputDriver = `${driver.firstname} ${driver.lastname} ${driver.register_number}`;
     routeData.driver_id = driver.id;
+    showDriverDropdown = false;
     console.log(driver.id);
     dispatch('driverSelected', driver);
 }
 
     function selectVehicle(vehicle) {
-        inputVehicle = `${vehicle.name} ${vehicle.model}`;
+        inputVehicle = `${vehicle.name} ${vehicle.model} ${vehicle.register_number}`;
         routeData.vehicle_id = vehicle.id;
+        showVehicleDropdown = false;
+        console.log(routeData.vehicle_id);
         dispatch('vehicleSelected', vehicle);
     }
 
     function handleStartingPlaceChanged(event) {
-        const { lat, lng } = event.detail.startingPlace;
-        routeData.lat_start = lat;
-        routeData.lng_start = lng;
+        const arr = event.detail.startingPlace;
+        console.log(arr);
+        routeData.lat_start = arr[1];
+        routeData.lng_start = arr[0];
     }
 
     function handleDestinationChanged(event) {
-        const { lat, lng } = event.detail.destination;
-        routeData.lat_end = lat;
-        routeData.lng_end = lng;
+        const arr = event.detail.destination;
+        routeData.lat_end = arr[1];
+        routeData.lng_end = arr[0];
     }
 
     function handleRouteChanged(event) {
-        routeData.distance = event.detail.distance;
-        routeData.duration = event.detail.duration;
+        // routeData.distance = event.detail.distance;
+        //routeData.duration = event.detail.duration;
     }
 
     async function handleAdd(event) {
         event.preventDefault();
-        try {
-            const res = await axios.post(`http://127.0.0.1:8080/api/route/add`, routeData);
-            console.log(res.data);
-            msg = "route added successfully";
-            window.location.href = "/routes";
-        } catch (error) {
-            console.log(error);
-            msg = "Failed to add route";
-        }
+        //try {
+        //    const res = await axios.post(`http://127.0.0.1:8080/api/route/add`, routeData);
+        //    console.log(res.data);
+        //    msg = "route added successfully";
+        //    window.location.href = "/routes";
+        //} catch (error) {
+        //    console.log(error);
+        //    msg = "Failed to add route";
+        //}
+        console.log(routeData);
     }
 </script>
 
-<form on:submit={handleAdd} class="mx-auto max-w-7xl px-4 py-8 sm:px-8">
-    <!-- Vos éléments de formulaire ici -->
-</form>
 
-<form on:submit={handleAdd} class="flex gap-10 mx-auto max-w-7xl px-4 py-8 sm:px-8">
-    <div class="flex-col w-[30%]">
-        <div class="flex items-center">
-            <h1>Add the informations</h1>
-            <hr>
+
+<form on:submit={handleAdd} class="flex justify-center gap-10 mx-auto max-w-7xl px-2 py-8 sm:px-8 pt-10">
+    <div class="flex-col w-[40%]">
+        <div class="flex items-center w-full">
+            <h1 class="w-[350px]">Add the informations</h1>
+            <hr class="border border-1 border-black w-full">
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center mt-10 gap-5">
 
             <div class="mb-5">
-                <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">Start Address</label>
-                <input type="text" placeholder="Start Address" bind:value={routeData.departure_city} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
+                <label for="text" class="mb-1 block text-base font-medium text-[#07074D]">Start Address</label>
+                <input required type="text" placeholder="Start Address" bind:value={routeData.departure_city} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
             </div>
             <div class="mb-5">
-                <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">End Address</label>
-                <input type="text"  placeholder="End Address" bind:value={routeData.arrival_city} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
+                <label for="text" class="mb-1 block text-base font-medium text-[#07074D]">End Address</label>
+                <input required type="text"  placeholder="End Address" bind:value={routeData.arrival_city} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
             </div>
         </div>
        
-        <div>
+        <div class="flex items-center mt-5 gap-5">
             <div class="mb-5">
                 <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">Start Date</label>
-                <input type="date" placeholder="Start Date" bind:value={routeData.departure_date} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
+                <input required type="date" placeholder="Start Date" bind:value={routeData.departure_date} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
             </div>
 
             <div class="mb-5">
-                <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">Start Date</label>
-                <input type="date" placeholder="Start Date" bind:value={routeData.arrival_date} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
+                <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">End Date</label>
+                <input required type="date" placeholder="Start Date" bind:value={routeData.arrival_date} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />
             </div>
         </div>
-        <div class="flex items-center">
-            <div>
+        <div class="flex items-center mt-5 gap-5">
+            <div class="flex relative flex-col gap-1">
+                <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">Select Vehicle</label>
                 <input class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" type="text" placeholder="Select Vehicle" bind:value={inputVehicle} on:input={handleInputVehicleChange} required>
-                <ul class="border  rounded-md border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md">
-                    {#each vehicles.filter(vehicle => vehicle.register_number.toLowerCase().includes(inputVehicle.toLowerCase())) as filteredVehicle}
-                    <li class="border  rounded-md border-[#ea8e8e] bg-white " on:click={() => selectVehicle(filteredVehicle)}>{filteredVehicle.register_number}</li>
+                {#if inputVehicle && showVehicleDropdown}
+
+                <ul class="border w-full top-[90px] absolute rounded-md border-[#e0e0e0] bg-white py-3 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md">
+                    {#each vehicles.filter(vehicle => 
+                    vehicle.register_number && vehicle.register_number.toLowerCase().includes(inputVehicle.toLowerCase()) ||
+                    vehicle.name && vehicle.name.toLowerCase().includes(inputVehicle.toLowerCase()) ||
+                    vehicle.name && vehicle.model.toLowerCase().includes(inputVehicle.toLowerCase())
+                    
+                    ) as filteredVehicle}
+                    <li class="px-2 border-b-2 w-full" on:click={() => selectVehicle(filteredVehicle)}>{filteredVehicle.name} {filteredVehicle.model} ({filteredVehicle.register_number})</li>
                     {/each}
                 </ul>
+                {/if}
             </div>
-            <div>
-                <input class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" type="text" placeholder="Select Driver" bind:value={inputDriver} on:input={handleInputDriverChange} required>
-                <ul class="border  rounded-md border-[#ea8e8e] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md">
+            <div class="flex relative flex-col gap-1">
+                <label for="text" class="mb-3 block text-base font-medium text-[#07074D]">Select Driver</label>
+
+                <input  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" type="text" placeholder="Select Driver" bind:value={inputDriver} on:input={handleInputDriverChange} required>
+                {#if inputDriver && showDriverDropdown}
+                <ul class="border w-full top-[90px] absolute rounded-md border-[#ea8e8e] bg-white py-3 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md">
                     {#each drivers.filter(driver => 
-                        driver.firstname.toLowerCase().includes(inputDriver.toLowerCase()) ||
-                        driver.lastname.toLowerCase().includes(inputDriver.toLowerCase())
+                        driver.firstname  && driver.firstname.toLowerCase().includes(inputDriver.toLowerCase()) ||
+                        driver.lastname && driver.lastname.toLowerCase().includes(inputDriver.toLowerCase()) ||
+                        driver.register_number && driver.register_number.toLowerCase().includes(inputDriver.toLowerCase())
                     ) as filteredDriver}
-                    <li on:click={() => selectDriver(filteredDriver)}>
-                        {filteredDriver.firstname} {filteredDriver.lastname}
+                    <li class="px-6 border-b-2 w-full" on:click={() => selectDriver(filteredDriver)}>
+                        {filteredDriver.firstname} {filteredDriver.lastname} ({filteredDriver.register_number})
                     </li>
                     {/each}
                 </ul>
+                {/if}
             </div>
         </div>
         <div>
-            <button class="hover:shadow-form w-full rounded-md bg-blue-700 py-3 px-8 text-center text-base font-semibold text-white outline-none" type="submit">Add Route</button>
+            <button class="hover:shadow-form w-full mt-5 rounded-md bg-blue-700 py-3 px-8 text-center text-base font-semibold text-white outline-none" type="submit">Add Route</button>
         </div>
     </div>
-    <div class="w-[70%] h-[400px] flex flex-col">
-        <div class="flex items-center">
-            <h1>Select the start and end points</h1>
-            <hr>
+    <div class="w-full h-[600px] flex flex-col">
+        <div class="flex items-center mb-10">
+            <h1 class="w-[400px]">Select the start and end points</h1>
+            <hr class="border border-1 border-black w-full">
         </div>
         <MapRoute on:startingPlaceChanged={handleStartingPlaceChanged} on:destinationChanged={handleDestinationChanged} on:routeChanged={handleRouteChanged}/>
     </div>
