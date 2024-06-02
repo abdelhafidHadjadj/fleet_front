@@ -9,12 +9,9 @@
   let operatorNumber = 0;
   let vehicleNumber = 0;
   let droneNumber = 0;
-  let vehNbrUse = 0;
-  let vehNbrMaintenance = 0;
-  let vehNbrAvailable = 0;
+ 
   let routeNumber = 0;
   let driverNumber = 0;
-  let vehNumberPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   // Function to initialize WebSocket connection
   function initWebSocket() {

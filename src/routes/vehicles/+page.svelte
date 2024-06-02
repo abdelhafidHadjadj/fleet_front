@@ -6,20 +6,51 @@
 
 
     let vehicleList = [];
+    let searchTerm = '';
+    let deleteModalOpen = false;
+    let selectedVehicleId = null;
+
   async function fetchData() {
     try {
-      axios.get("http://127.0.0.1:8080/api/vehicle/getall").then( res => {
-       vehicleList = res.data.data;
+      const res = await axios.get("http://127.0.0.1:8080/api/vehicle/getall");
+      vehicleList = res.data.data;
       console.log(res.data.data);
-      })
+      
     } catch (error) {
       console.log(error);
     }
   }
 
-onMount(() => fetchData())
 
+onMount(() => fetchData())
+function handleSearch(event) {
+    searchTerm = event.detail;
+    console.log('Search term:', searchTerm); // Log search term
+
+  }
+
+  function openDeleteModal(id) {
+        selectedVehicleId = id;
+        deleteModalOpen = true;
+        console.log(deleteModalOpen);
+    }
+
+  $: filteredVehicles = vehicleList.filter(vehicle => {
+    return (vehicle.driver && vehicle.driver.toLowerCase().includes(searchTerm.toLowerCase())) ||
+           (vehicle.name && vehicle.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+           (vehicle.register_number && vehicle.register_number.toLowerCase().includes(searchTerm.toLowerCase()));
+  });
+
+
+  function handleDeleteSuccess(event) {
+        const { id } = event.detail;
+        vehicleList = vehicleList.filter(vehicle => vehicle.id !== id);
+        deleteModalOpen = false;
+    }
 </script>
+{#if deleteModalOpen}
+<Delete open={deleteModalOpen} table="VEHICLE" id={selectedVehicleId} on:close={() => deleteModalOpen = false} on:deleteSuccess={handleDeleteSuccess}/>
+{/if}
 
 <div class="mx-auto max-w-7xl px-4 py-8 sm:px-8">
   <div class="flex items-center justify-between pb-6">
@@ -29,7 +60,7 @@ onMount(() => fetchData())
       </div>
     </div>
   </div>
-  <SearchInput />
+  <SearchInput on:search={handleSearch} link="/vehicles/addvehicle"/>
   <br>
   <div class="overflow-y-hidden rounded-lg border">
     <div class="overflow-x-auto">
@@ -49,7 +80,7 @@ onMount(() => fetchData())
           </tr>
         </thead>
         <tbody class="text-gray-500">
-          {#each vehicleList as vehicle}
+          {#each filteredVehicles as vehicle}
 
           <tr>
             <td class="py-3 ps-4">
@@ -81,9 +112,10 @@ onMount(() => fetchData())
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{vehicle.status}</span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <button class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</button>
-                <button class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Delete</button>
-            </td>
+                <a href={`/vehicles/edit/${vehicle.id}`} class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
+                <button on:click={() => openDeleteModal(vehicle.id)} class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Delete</button>
+              </td>
+           
           </tr>
           {/each}
         </tbody>

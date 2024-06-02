@@ -1,21 +1,20 @@
 <script>
   import SearchInput from "$lib/components/SearchInput.svelte";
-  import Delete from "$lib/components/Delete.svelte";
-import axios from "axios";
-import { onMount } from "svelte";
+  import Delete from "$lib/components/Delete.svelte"; 
+  import axios from "axios";
+  import { onMount } from "svelte";
 
 
-  let driverList = [];
+  let operatorList = [];
   let searchTerm = '';
   let deleteModalOpen = false;
-  let selectedDriverId = null;
+  let selectedOperatorId = null;
 
 async function fetchData() {
   try {
-    const res = await axios.get("http://127.0.0.1:8080/api/driver/getall");
-    driverList = res.data.data;
+    const res = await axios.get("http://127.0.0.1:8080/api/user/operators");
+    operatorList = res.data.data;
     console.log(res.data.data);
-    
   } catch (error) {
     console.log(error);
   }
@@ -26,41 +25,33 @@ onMount(() => fetchData())
 function handleSearch(event) {
   searchTerm = event.detail;
   console.log('Search term:', searchTerm); // Log search term
-
 }
 
 function openDeleteModal(id) {
-      selectedDriverId = id;
+      selectedOperatorId = id;
       deleteModalOpen = true;
       console.log(deleteModalOpen);
   }
 
-$: filteredDrivers = driverList.filter(driver => {
-  return  (driver.firstname && driver.firstname.toLowerCase().includes(searchTerm.toLowerCase())) || 
-         (driver.lastname && driver.lastname.toLowerCase().includes(searchTerm.toLowerCase())) ||
-         (driver.register_number && driver.register_number.toLowerCase().includes(searchTerm.toLowerCase()));
+$: filteredOperators = operatorList.filter(operator => {
+  return  (operator.firstname && operator.firstname.toLowerCase().includes(searchTerm.toLowerCase())) || 
+         (operator.lastname && operator.lastname.toLowerCase().includes(searchTerm.toLowerCase())) ||
+         (operator.email && operator.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+         (operator.register_number && operator.register_number.toLowerCase().includes(searchTerm.toLowerCase()));
         
         });
 
 
 function handleDeleteSuccess(event) {
       const { id } = event.detail;
-      driverList = driverList.filter(driver => driver.id !== id);
+      operatorList = operatorList.filter(op => op.id !== id);
       deleteModalOpen = false;
   }
 
 
-  function calculate_age(dob) { 
-    var diff_ms = Date.now() - dob.getTime();
-    var age_dt = new Date(diff_ms); 
-      return Math.abs(age_dt.getUTCFullYear() - 1970);
-}
-
-
-
 </script>
 {#if deleteModalOpen}
-<Delete open={deleteModalOpen} table="DRIVER" id={selectedDriverId} on:close={() => deleteModalOpen = false} on:deleteSuccess={handleDeleteSuccess}/>
+<Delete open={deleteModalOpen} table="USER" id={selectedOperatorId} on:close={() => deleteModalOpen = false} on:deleteSuccess={handleDeleteSuccess}/>
 {/if}
 
 <div class="mx-auto max-w-7xl px-4 py-8 sm:px-8">
@@ -71,7 +62,7 @@ function handleDeleteSuccess(event) {
     </div>
   </div>
 </div>
-<SearchInput on:search={handleSearch} link="drivers/adddriver"/>
+<SearchInput on:search={handleSearch} link="operators/addoperator"/>
 <br>
 <div class="overflow-y-hidden rounded-lg border">
   <div class="overflow-x-auto">
@@ -84,16 +75,15 @@ function handleDeleteSuccess(event) {
           </div></th>
           <th class="px-5 py-5">ID</th>
           <th class="px-5 py-3">Fullname</th>
-          <th class="px-5 py-3">Register Number</th>
+          <th class="px-5 py-3">Email</th>
           <th class="px-5 py-3">Phone</th>
-          <th class="px-5 py-3">Age</th>
           <th class="px-5 py-3">Status</th>
-          <th class="px-5 py-3">Created By</th>
+          <th class="px-5 py-3">Created At</th>
           <th class="px-5 py-3">Action</th>
         </tr>
       </thead>
       <tbody class="text-gray-500">
-        {#each filteredDrivers as driver}
+        {#each filteredOperators as operator}
 
         <tr>
           <td class="py-3 ps-4">
@@ -112,32 +102,29 @@ function handleDeleteSuccess(event) {
           </td>
         -->
         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-          <p class="whitespace-no-wrap">{driver.id}</p>
+          <p class="whitespace-no-wrap">{operator.id}</p>
         </td>
           
         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-          <p class="whitespace-no-wrap">{`${driver.firstname} ${driver.lastname}`}</p>
+          <p class="whitespace-no-wrap">{`${operator.firstname} ${operator.lastname}`}</p>
         </td>
         <td class="px-6 py-4 ">
             <div class="border-2 w-40 bg-blue-300 rounded-md px-1 border-black text-black flex items-center justify-center">
-                {driver.register_number}
+                {operator.email}
             </div>
         </td>
           <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{driver.phone}</span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{calculate_age(new Date(driver.date_of_birth))}</span>
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{operator.phone}</span>
           </td>
           <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-            <p class="whitespace-no-wrap">{driver.status}</p>
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{operator.status}</span>
           </td>
           <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-            <p class="whitespace-no-wrap">{driver.created_by_username}</p>
+            <p class="whitespace-no-wrap">{operator.created_at}</p>
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-              <a href={`/drivers/edit/${driver.id}`} class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
-              <button on:click={() => openDeleteModal(driver.id)} class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Delete</button>
+              <a href={`/operators/edit/${operator.id}`} class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
+              <button on:click={() => openDeleteModal(operator.id)} class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Delete</button>
             </td>
          
         </tr>
