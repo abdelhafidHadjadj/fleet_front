@@ -5,50 +5,28 @@
 
     const dispatch = createEventDispatcher();
     let id;
-    // let token = localStorage.getItem('token');
+    let token = localStorage.getItem('token');
     let msg;
+    let vehicles = []
+    let drivers = []
+    async function getVehicles() {
+        try {
+           let res = await axios.get('http://127.0.0.1:8080/api/vehicle/getall')
+           vehicles = res.data.data
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-    const vehicles = [
-        { 
-            id: '1',
-            register_number: '0001',
-            name: 'veh1',
-            model: '105'
-        },
-        { 
-            id: '2',
-            register_number: '20000',
-            name: 'veh1',
-            model: '207',
-        },
-        { 
-            id: '3',
-            register_number: '3333 ',
-            name: 'veh1',
-            model: '308',
+    async function getDrivers() {
+        try {
+            let res = await axios.get('http://127.0.0.1:8080/api/driver/getall')
+            drivers = res.data.data
+        } catch (error) {
+            console.log(error);
         }
-    ];
-    
-    const drivers = [
-        { 
-            id: '1',
-            register_number: '1111',
-            firstname: 'dr1',
-            lastname: 'rr1',
-        },
-        { 
-            id: '2',
-            register_number: '2222',
-            firstname: 'dr2',
-            lastname: 'rr2',
-        },
-        { 
-            id: '3',
-            register_number: '3333',
-            firstname: 'dr3',
-            lastname: 'rr3',
-        }
-    ];
+    }
+
     let routeData = {
         departure_city: "",
         arrival_city: "",
@@ -63,21 +41,25 @@
         created_by: ""
     };
 
-   // async function protectedRoute() {
-   //     try {
-   //         const res = await axios.get("http://127.0.0.1:8080/protected", {
-   //             headers: {
-   //                 'Authorization': `Bearer ${token}`
-   //             }
-   //         });
-   //         id = res.data.id;
-   //         console.log('created by ', id);
-   //     } catch (error) {
-   //         console.log(error);
-   //     }
-   // }
+   async function protectedRoute() {
+       try {
+           const res = await axios.get("http://127.0.0.1:8080/protected", {
+               headers: {
+                   'Authorization': `Bearer ${token}`
+               }
+           });
+           id = res.data.id;
+           console.log('created by ', id);
+       } catch (error) {
+           console.log(error);
+       }
+   }
 
-//    onMount(() => protectedRoute());
+  onMount(() => {
+    protectedRoute()
+    getDrivers()
+    getVehicles()
+});
 
     let inputDriver = "";
     let inputVehicle = "";
@@ -131,15 +113,15 @@
 
     async function handleAdd(event) {
         event.preventDefault();
-        //try {
-        //    const res = await axios.post(`http://127.0.0.1:8080/api/route/add`, routeData);
-        //    console.log(res.data);
-        //    msg = "route added successfully";
-        //    window.location.href = "/routes";
-        //} catch (error) {
-        //    console.log(error);
-        //    msg = "Failed to add route";
-        //}
+        try {
+            const res = await axios.post(`http://127.0.0.1:8080/api/route/add`, routeData);
+            console.log(res.data);
+            msg = "route added successfully";
+            window.location.href = "/routes";
+        } catch (error) {
+            console.log(error);
+            msg = "Failed to add route";
+        }
         console.log(routeData);
     }
 </script>

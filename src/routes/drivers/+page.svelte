@@ -75,32 +75,24 @@ function handleDeleteSuccess(event) {
 <br>
 <div class="overflow-y-hidden rounded-lg border">
   <div class="overflow-x-auto">
-    <table class="w-full">
+    <table class="w-[90%]">
       <thead>
         <tr class="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
-          <th class="px-5 py-3"><div class="flex items-center h-5">
-            <input id="hs-table-pagination-checkbox-1" type="checkbox" class="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
-            <label for="hs-table-pagination-checkbox-1" class="sr-only">Checkbox</label>
-          </div></th>
-          <th class="px-5 py-5">ID</th>
+          <th class="px-2 py-5">ID</th>
           <th class="px-5 py-3">Fullname</th>
           <th class="px-5 py-3">Register Number</th>
-          <th class="px-5 py-3">Phone</th>
-          <th class="px-5 py-3">Age</th>
-          <th class="px-5 py-3">Status</th>
-          <th class="px-5 py-3">Created By</th>
-          <th class="px-5 py-3">Action</th>
+          <th class="px-2 py-3">Phone</th>
+          <th class="px-2 py-3">Age</th>
+          <th class="px-2 py-3">Status</th>
+          <th class="px-2 py-3">Created By</th>
+          <th class="px-2 py-3">Action</th>
         </tr>
       </thead>
       <tbody class="text-gray-500">
         {#each filteredDrivers as driver}
 
         <tr>
-          <td class="py-3 ps-4">
-          <div class="flex items-center h-5">
-            <input id="hs-table-pagination-checkbox-1" type="checkbox" class="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
-            <label for="hs-table-pagination-checkbox-1" class="sr-only">Checkbox</label>
-          </div>
+         
         <!--
 
           <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
@@ -111,7 +103,7 @@ function handleDeleteSuccess(event) {
             </div>
           </td>
         -->
-        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+        <td class="border-b border-gray-200 bg-white px-2 py-5 text-sm">
           <p class="whitespace-no-wrap">{driver.id}</p>
         </td>
           
@@ -119,23 +111,23 @@ function handleDeleteSuccess(event) {
           <p class="whitespace-no-wrap">{`${driver.firstname} ${driver.lastname}`}</p>
         </td>
         <td class="px-6 py-4 ">
-            <div class="border-2 w-40 bg-blue-300 rounded-md px-1 border-black text-black flex items-center justify-center">
+            <div class="border-2 w-[130px] bg-blue-300 rounded-md px-1 border-black text-black flex items-center justify-center">
                 {driver.register_number}
             </div>
         </td>
           <td class="px-6 py-4 whitespace-nowrap">
               <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{driver.phone}</span>
           </td>
-          <td class="px-6 py-4 whitespace-nowrap">
+          <td class="px-2 py-4 whitespace-nowrap">
               <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{calculate_age(new Date(driver.date_of_birth))}</span>
           </td>
-          <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+          <td class="border-b border-gray-200 bg-white px-2 py-5 text-sm">
             <p class="whitespace-no-wrap">{driver.status}</p>
           </td>
-          <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+          <td class="border-b border-gray-200 bg-white px-2 py-5 text-sm">
             <p class="whitespace-no-wrap">{driver.created_by_username}</p>
           </td>
-          <td class="px-6 py-4 whitespace-nowrap">
+          <td class="px-2 py-4 whitespace-nowrap">
               <a href={`/drivers/edit/${driver.id}`} class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
               <button on:click={() => openDeleteModal(driver.id)} class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Delete</button>
             </td>

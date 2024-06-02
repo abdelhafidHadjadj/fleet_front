@@ -14,27 +14,31 @@
   let driverNumber = 0;
 
   // Function to initialize WebSocket connection
+ 
   function initWebSocket() {
     socket = new WebSocket("ws://localhost:8080/ws");
 
     socket.onopen = () => {
-      console.log("WebSocket connection opened");
+        console.log("WebSocket connection opened");
     };
 
     socket.onmessage = (event) => {
-      console.log("Received message:", event.data);
-      messages = [...messages, event.data];
-      console.log(messages);
+        console.log("Received message:", event.data);
+        messages = [...messages, event.data];
     };
 
-    socket.onclose = () => {
-      console.log("WebSocket connection closed");
+    socket.onclose = (event) => {
+        console.log(`WebSocket connection closed: ${event.reason}`);
+        if (!event.wasClean) {
+            console.log("Reconnecting...");
+            setTimeout(initWebSocket, 1000); // Reconnect after 1 second
+        }
     };
 
     socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
+        console.error("WebSocket error:", error);
     };
-  }
+}
 
   async function fetchData() {
     try {

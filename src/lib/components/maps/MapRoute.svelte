@@ -13,7 +13,7 @@
     const dispatch = createEventDispatcher();
 
     onMount(() => {
-        mapboxgl.accessToken = 'pk.eyJ1IjoiaGFmaWRldiIsImEiOiJjbHd2MnF4Z3Mwa2lpMm9yMXA4c203N3pzIn0.oyH-nptbSOQIm6bQaDXhiQ';
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaGFmaWRldiIsImEiOiJjbHd4dTZ6eHMxY2d4MmpzN2RkN2owYWFuIn0.FHXkyRiUlZ0VEfj6A-hoxg';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
