@@ -10,7 +10,7 @@
         <div >
             
         </div>
-        <ul class="nav-list mt-20 mb-20  h-full ">   
+        <ul class="nav-list mt-20 mb-20 h-full ">   
             <li class="relative my-8">
                 <a href="/dashboard"> 
                     <i class="bx bx-grid-alt text-white h-16 leading-16 min-w-12 text-lg text-center"></i>

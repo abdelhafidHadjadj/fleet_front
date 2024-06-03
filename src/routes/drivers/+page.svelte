@@ -75,10 +75,10 @@ function handleDeleteSuccess(event) {
 <br>
 <div class="overflow-y-hidden rounded-lg border">
   <div class="overflow-x-auto">
-    <table class="w-[90%]">
+    <table class="w-[100%]">
       <thead>
         <tr class="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
-          <th class="px-2 py-5">ID</th>
+          <th class="px-5 py-5">ID</th>
           <th class="px-5 py-3">Fullname</th>
           <th class="px-5 py-3">Register Number</th>
           <th class="px-2 py-3">Phone</th>
@@ -103,7 +103,7 @@ function handleDeleteSuccess(event) {
             </div>
           </td>
         -->
-        <td class="border-b border-gray-200 bg-white px-2 py-5 text-sm">
+        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
           <p class="whitespace-no-wrap">{driver.id}</p>
         </td>
           

@@ -1,45 +1,62 @@
-<main
-  class="mx-auto flex min-h-screen w-full items-center justify-center bg-indigo-100 text-white"
->
-  <section class="flex w-[30rem] flex-col space-y-10">
-    <div class="text-center text-4xl font-black text-sky-950"><h1> Welcome!</h1>
-        <span class="text-slate-500 text-xl font-medium">Sign in to continue</span>
-    </div>
+
+<script>
+	import axios from "axios";
+
+  
+  let msg;
+  function handleSubmit(e) {
+    e.preventDefault()
+    let data = {
+      loginType: "driver",
+      email: e.target.email.value,
+      password: e.target.password.value
+    }
+    console.log(data);
+    axios.post("http://127.0.0.1:8080/login", data).then(res => {
+    console.log(res.data);
+    window.location.href = "/dashboard"
+    localStorage.setItem("token", res.data.token);
+}).catch(err => {
+    console.error(err);
+    msg = "Invalid credentials"
+  });
+    
+  }
+</script>
+
+
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <br>
-    <div
-      class="w-full transform border-b-2 bg-transparent text-lg duration-300 focus-within:border-sky-950"
-    >
-      <input
-        type="text"
-        placeholder="Email or Username"
-        class="w-full border-none bg-transparent outline-none text-sky-950  focus:outline-none"
-      />
-    </div>
+    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Welcome to fleet managment plateform!</h2>
+  </div>
+  
+  <p class="font-semibold text-red-500 flex justify-center items-center">{msg? msg: ""}</p>
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    
+    <form class="space-y-6" on:submit={handleSubmit} >
+      <div>
+        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+        <div class="mt-2">
+          <input  id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
 
-    <div
-      class="w-full transform text-sky-950 border-b-2 bg-transparent text-lg duration-300 focus-within:border-sky-950"
-    >
-      <input
-        type="password"
-        placeholder="Password"
-        class="w-full text-sky-950 border-none bg-transparent outline-none  focus:outline-none"
-      />
-    </div>
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <div class="text-sm">
+            <a href="/" class="font-semibold text-blue-600 hover:text-blue-500">Forgot password?</a>
+          </div>
+        </div>
+        <div class="mt-2">
+          <input  id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
 
-    <button
-      class="transform rounded-sm bg-gradient-to-r from-cyan-950 to-blue-800 py-2 font-bold duration-300 hover:bg-indigo-400"
-    >
-      LOG IN
-    </button>
-
-    <a
-      href="/"
-      class="transform text-center font-semibold text-gray-500 duration-300 hover:text-gray-300"
-      >FORGOT PASSWORD?</a
-    >
-
-    <p class="text-center text-lg text-blue-700">
-      Contact@support
-    </p>
-  </section>
-</main>
+      <div>
+        <button type="submit" class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Log in</button>
+      </div>
+    </form>
+  </div>
+</div>

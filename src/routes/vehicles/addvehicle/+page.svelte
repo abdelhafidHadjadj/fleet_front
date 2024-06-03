@@ -66,9 +66,12 @@
         <div class="rounded-t-lg h-32 overflow-hidden">
           <div class="object-cover object-top w-full"></div>
         </div>
-        <div class="mx-auto w-60 h-40 relative -mt-16 border-4 border-white overflow-hidden">
-          <img class="object-cover object-center h-32" src="https://images.unsplash.com/photo-1580225599687-30d87d260b0b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="Car">
-        </div>
+        <!--
+
+          <div class="mx-auto w-60 h-40 relative -mt-16 border-4 border-white overflow-hidden">
+            <img class="object-cover object-center h-32" src="https://images.unsplash.com/photo-1580225599687-30d87d260b0b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="Car">
+          </div>
+        -->
         <div class="mb-5">
           <label for="register_number" class="mb-3 block text-base font-medium text-[#07074D]">Registration number</label>
           <input type="text" name="register_number" id="register_number" placeholder="Registration number" bind:value={vehicleData.register_number} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-700 focus:shadow-md" />

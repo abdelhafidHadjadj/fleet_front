@@ -5,7 +5,6 @@
   import { onMount, onDestroy } from "svelte";
 
   let messages = [];
-  let socket;
   let operatorNumber = 0;
   let vehicleNumber = 0;
   let droneNumber = 0;
@@ -15,30 +14,7 @@
 
   // Function to initialize WebSocket connection
  
-  function initWebSocket() {
-    socket = new WebSocket("ws://localhost:8080/ws");
-
-    socket.onopen = () => {
-        console.log("WebSocket connection opened");
-    };
-
-    socket.onmessage = (event) => {
-        console.log("Received message:", event.data);
-        messages = [...messages, event.data];
-    };
-
-    socket.onclose = (event) => {
-        console.log(`WebSocket connection closed: ${event.reason}`);
-        if (!event.wasClean) {
-            console.log("Reconnecting...");
-            setTimeout(initWebSocket, 1000); // Reconnect after 1 second
-        }
-    };
-
-    socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-    };
-}
+ 
 
   async function fetchData() {
     try {
@@ -68,17 +44,11 @@
 
   // Call the function to initialize WebSocket connection on component mount
   onMount(() => {
-    initWebSocket();
 
    fetchData()
 
   });
 
-  onDestroy(() => {
-    if (socket) {
-      socket.close();
-    }
-  });
 </script>
 
 <!-- Container to center the content -->
@@ -151,26 +121,29 @@
     </div>
   </div>
 
-  <div class="flex">
+  <div class="flex w-[90%] justify-between">
     <Line 
       borderColor={'rgb(255, 99, 132)'}
       months={12}
       label="Vehicles Created By Month"
     />
+    <div class="flex flex-col items-center">
 
-    <Pie 
-    backgroundColor={[
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)'
-    ]}
+      <Pie 
+      backgroundColor={[
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ]}
     labels={[
       'Available',
       'Maintenance',
       'In Use'
     ]}
     label="Vehicle Status"
-  />
+    />
+    <p>Vehicle Status</p>
+  </div>
 
   </div>
 </div>
@@ -190,7 +163,7 @@
   .cardBox {
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 90%;
   }
   
   .card {

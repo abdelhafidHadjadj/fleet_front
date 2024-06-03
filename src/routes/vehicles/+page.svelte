@@ -1,8 +1,8 @@
 <script>
     import SearchInput from "$lib/components/SearchInput.svelte";
     import Delete from "$lib/components/Delete.svelte";
-  import axios from "axios";
-  import { onMount } from "svelte";
+    import axios from "axios";
+    import { onMount } from "svelte";
 
 
     let vehicleList = [];
@@ -67,14 +67,12 @@ function handleSearch(event) {
       <table class="w-full">
         <thead>
           <tr class="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
-            <th class="px-5 py-3"><div class="flex items-center h-5">
-              <input id="hs-table-pagination-checkbox-1" type="checkbox" class="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
-              <label for="hs-table-pagination-checkbox-1" class="sr-only">Checkbox</label>
-            </div></th>
+            
+            <th class="px-5 py-5">ID</th>
             <th class="px-5 py-5">Vehicule</th>
             <th class="px-5 py-3">License Plate</th>
             <th class="px-5 py-3">Model</th>
-            <th class="px-5 py-3">Driver</th>
+            <th class="px-5 py-3">Type</th>
             <th class="px-5 py-3">Status</th>
             <th class="px-5 py-3">Action</th>
           </tr>
@@ -83,11 +81,12 @@ function handleSearch(event) {
           {#each filteredVehicles as vehicle}
 
           <tr>
-            <td class="py-3 ps-4">
-            <div class="flex items-center h-5">
-              <input id="hs-table-pagination-checkbox-1" type="checkbox" class="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
-              <label for="hs-table-pagination-checkbox-1" class="sr-only">Checkbox</label>
-            </div>
+           
+            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p class="whitespace-no-wrap">
+                    {vehicle.id}
+              </p>
+            </td>
           
             <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
               <div class="flex items-center">

@@ -1,5 +1,3 @@
-
-
 <script>
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
@@ -8,8 +6,8 @@
     import 'mapbox-gl/dist/mapbox-gl.css';
     import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 
-    let startingPlace = null;
-    let destination = null;
+    export let startingPlace;
+    export let destination;
     const dispatch = createEventDispatcher();
 
     onMount(() => {
@@ -17,7 +15,7 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
-            center: [-79.4512, 43.6568],
+            center: startingPlace || [-79.4512, 43.6568],
             zoom: 13
         });
 
@@ -27,10 +25,15 @@
 
         map.addControl(directions, 'top-left');
 
+        // Set initial route if startingPlace and destination are provided
+        if (startingPlace && destination) {
+            directions.setOrigin(startingPlace);
+            directions.setDestination(destination);
+        }
+
         directions.on('origin', (event) => {
             if (event.feature && event.feature.geometry && event.feature.geometry.coordinates) {
                 startingPlace = event.feature.geometry.coordinates;
-                console.log(startingPlace);
                 dispatch('startingPlaceChanged', { startingPlace });
             }
         });
@@ -45,9 +48,8 @@
         directions.on('route', (event) => {
             if (event.route && event.route.length > 0) {
                 const route = event.route[0];
-                const distance = route.distance; 
-                const duration = route.duration; 
-
+                const distance = route.distance;
+                const duration = route.duration;
                 dispatch('routeChanged', { distance, duration });
             }
         });
@@ -57,12 +59,11 @@
 <div id="map"></div>
 
 <style>
-	
     #map {
         top: 0;
         bottom: 0;
         width: 100%;
-		height: 100%;
+        height: 100%;
     }
 
     @media (max-width: 600px) {

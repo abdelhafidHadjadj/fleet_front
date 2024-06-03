@@ -58,3 +58,10 @@
 	<canvas bind:this={chartCanvas} id="myChart"></canvas>
   </div>
   
+
+  <style>
+	#myChart {
+		width: 350px;
+		height: 350px;
+	}
+  </style>

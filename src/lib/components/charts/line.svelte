@@ -63,8 +63,8 @@
   
 <style>
     #myChart {
-        width: 550px;
-        height: 550px;
+        width: 700px;
+        height: 350px;
     }
 </style>
 
