@@ -13,7 +13,15 @@
   let driverNumber = 0;
 
   // Function to initialize WebSocket connection
- 
+//async function handleProtected() {
+//    await axios.get("http//127.0.0.1:8080/protected").then(res => {
+//      console.log(res.data.role)
+//  }).catch(err => {
+//    console.log(err);
+//    window.location.href = "/login" 
+//
+//  })
+//}
  
 
   async function fetchData() {
@@ -44,8 +52,9 @@
 
   // Call the function to initialize WebSocket connection on component mount
   onMount(() => {
-
+   // handleProtected()
    fetchData()
+
 
   });
 

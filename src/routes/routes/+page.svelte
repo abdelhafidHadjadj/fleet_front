@@ -71,10 +71,7 @@ function handleDeleteSuccess(event) {
     <table class="w-full">
       <thead>
         <tr class="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
-          <th class="px-5 py-3"><div class="flex items-center h-5">
-            <input id="hs-table-pagination-checkbox-1" type="checkbox" class="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
-            <label for="hs-table-pagination-checkbox-1" class="sr-only">Checkbox</label>
-          </div></th>
+         
           <th class="px-5 py-5">ID</th>
           <th class="px-5 py-3">
             <div class="flex items-center">
@@ -115,21 +112,8 @@ function handleDeleteSuccess(event) {
         {#each filteredRoutes as route}
 
         <tr>
-          <td class="py-3 ps-4">
-          <div class="flex items-center h-5">
-            <input id="hs-table-pagination-checkbox-1" type="checkbox" class="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
-            <label for="hs-table-pagination-checkbox-1" class="sr-only">Checkbox</label>
-          </div>
-        <!--
+       
 
-          <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-            <div class="flex items-center">
-              <div class="h-20 w-30 flex-shrink-0">
-                <img class="h-full w-full rounded-2" src="" alt="" />
-              </div>
-            </div>
-          </td>
-        -->
         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
           <p class="whitespace-no-wrap">{route.id}</p>
         </td>

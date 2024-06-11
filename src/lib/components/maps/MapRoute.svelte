@@ -11,7 +11,7 @@
     const dispatch = createEventDispatcher();
 
     onMount(() => {
-        mapboxgl.accessToken = 'pk.eyJ1IjoiaGFmaWRldiIsImEiOiJjbHd4dTZ6eHMxY2d4MmpzN2RkN2owYWFuIn0.FHXkyRiUlZ0VEfj6A-hoxg';
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaGFmaWRldiIsImEiOiJjbHd5eW80bzMwMjF1MmtzN3Y3aWluZmVrIn0.9sDV5QNSefWnKwtKgXkYIA';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',

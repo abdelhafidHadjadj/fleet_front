@@ -28,7 +28,7 @@
     }
 
     let routeData = {
-        status: "canceled",
+        status: "progress",
         departure_city: "",
         arrival_city: "",
         departure_date: "",

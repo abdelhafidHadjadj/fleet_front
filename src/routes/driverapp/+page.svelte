@@ -14,8 +14,8 @@
     console.log(data);
     axios.post("http://127.0.0.1:8080/login", data).then(res => {
     console.log(res.data);
-    window.location.href = "/dashboard"
-    localStorage.setItem("token", res.data.token);
+    window.location.href = "/driverapp/map"
+    localStorage.setItem("tokenDriver", res.data.token);
 }).catch(err => {
     console.error(err);
     msg = "Invalid credentials"
@@ -28,7 +28,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <br>
-    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Welcome to fleet managment plateform!</h2>
+    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Welcome to fleet managment app driver!</h2>
   </div>
   
   <p class="font-semibold text-red-500 flex justify-center items-center">{msg? msg: ""}</p>

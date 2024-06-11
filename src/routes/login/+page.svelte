@@ -2,9 +2,10 @@
 <script>
 	import axios from "axios";
 
-  
+let userRole;  
   let msg;
-  function handleSubmit(e) {
+  let token;
+  async function handleSubmit(e) {
     e.preventDefault()
     let data = {
       loginType: "user",
@@ -12,16 +13,40 @@
       password: e.target.password.value
     }
     console.log(data);
-    axios.post("http://127.0.0.1:8080/login", data).then(res => {
+    await axios.post("http://127.0.0.1:8080/login", data).then(res => {
     console.log(res.data);
-    window.location.href = "/dashboard"
+    token = res.data.token
     localStorage.setItem("token", res.data.token);
 }).catch(err => {
     console.error(err);
     msg = "Invalid credentials"
   });
     
+  protectedRoute()
+
   }
+
+
+  async function protectedRoute() {
+    try {
+      const res = await axios.get("http://127.0.0.1:8080/protected", {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.data.role == 'operator') {
+        window.location.href = "/drivers"
+      }
+      if (res.data.role == 'admin') {
+        window.location.href = "/dashboard"
+      }
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
 </script>
 
 
